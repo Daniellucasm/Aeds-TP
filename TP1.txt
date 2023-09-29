@@ -1,0 +1,4 @@
+NBA
+https://www.kaggle.com/datasets/szymonjwiak/nba-active-players-data-images
+Hotel Reviews
+https://www.kaggle.com/datasets/juhibhojani/hotel-reviews
