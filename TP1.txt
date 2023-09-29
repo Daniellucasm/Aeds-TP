@@ -1,4 +1,2 @@
-NBA
-https://www.kaggle.com/datasets/szymonjwiak/nba-active-players-data-images
-Hotel Reviews
-https://www.kaggle.com/datasets/juhibhojani/hotel-reviews
+FIFA WORLD CUP 2018 Players
+https://www.kaggle.com/datasets/djamshed/fifa-world-cup-2018-players
