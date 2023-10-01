@@ -1,11 +1,8 @@
 import java.io.BufferedReader;
 import java.io.DataInputStream;
-import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -84,11 +81,54 @@ public class Main {
                 len = dis.readInt();
             }
         }
+        dis.close();
+        entrada.close();
         
     }
 
+    /** LEMBRAR **/
     public static void atualizarRegistro(List<Players> jogadores) throws Exception{
+        Scanner entrada = new Scanner(System.in);
+        System.out.println("Qual o ID do registro que deseja atualizar?");
+        int idBusca = entrada.nextInt();
+        entrada.nextLine();
+        System.out.println("Digite a seleção: ");
+        jogadores.get(idBusca).setSelecao(entrada.nextLine());
+        System.out.println("Digite o numero da camisa: ");
+        jogadores.get(idBusca).setNumeroCamisa(Integer.parseInt(entrada.nextLine()));
+        System.out.println("Digite o nomePopular: ");
+        jogadores.get(idBusca).setNomePopular(entrada.nextLine());
+        System.out.println("Digite a data no formato dd.MM.yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        jogadores.get(idBusca).setAniversario(formatter.parse(entrada.nextLine()));
+        System.out.println("Digite o nome da Camisa");
+        jogadores.get(idBusca).setNomeCamisa(entrada.nextLine());
+        System.out.println("Digite o clube novo");
+        jogadores.get(idBusca).setClube(entrada.nextLine());
+        System.out.println("Digite a altura");
+        jogadores.get(idBusca).setHeight(entrada.nextDouble());
+        System.out.println("Digite o peso");
+        jogadores.get(idBusca).setWeight(entrada.nextDouble());
+        escreverBase(jogadores);
 
+        entrada.close();
+    }
+
+    /** LEMBRAR **/
+    public static void deletarRegistro(List<Players> jogadores) throws Exception{
+        Scanner entrada = new Scanner(System.in);
+        System.out.println("Qual o ID do registro que deseja deletar?");
+        int idBusca = entrada.nextInt();
+        for(int i = 0; i < jogadores.size(); i++){
+            Players p = jogadores.get(i);
+            if(p.getId() == idBusca){
+                jogadores.remove(p);
+                break;
+            }
+        }
+        escreverBase(jogadores);
+
+        entrada.close();
     }
 
     public static void main(String[] args) throws Exception {
@@ -99,11 +139,16 @@ public class Main {
         int n;
         do{
             //MENU OPÇÔES
+            System.out.println("======================= FIFA WORLD CUP 2018 ========================");
             System.out.println("--------------------- Escolha a opção desejada ---------------------");
             System.out.println("----------------- (1) Realizar carga da base de dados --------------");
             System.out.println("--------------------- (2) Ler um registro (id) ---------------------");
             System.out.println("--------------------- (3) Atualizar um registro --------------------");
+            System.out.println("--------------------- (4) Deletar um registro ----------------------");
+            System.out.println("--------------------- (5) ORDENAÇÃO EXTERNA ------------------------");
+            System.out.println("--------------------- (6) INDEXAÇÃO --------------------------------");
             System.out.println("----------------------------- (0) SAIR -----------------------------");
+            System.out.println("====================================================================");
             n = entrada.nextInt();
             switch (n) {
                 case 1:
@@ -119,8 +164,40 @@ public class Main {
                         atualizarRegistro(jogadores);
                     }
                     break;
+                case 4:
+                    if(jogadores != null){
+                        deletarRegistro(jogadores);
+                    }
+                    break;
+                case 5:
+                    System.out.println("(1) Intercalação Balanceada comum");
+                    System.out.println("(2) Intercalação Balanceada com blocos de tamanho variável");
+                    System.out.println("(3) Intercalação Balanceada com seleção por substituição");
+                    int opcao = entrada.nextInt();
+                    if(1 == opcao){
+
+                    } else if( 2 == opcao){
+                        
+                    } else {
+
+                    }
+                    break;
+                case 6:
+                    System.out.println("(1) Árvore B");
+                    System.out.println("(2) Hashing Estendido");
+                    System.out.println("(3) Lista invertida");
+                    opcao = entrada.nextInt();
+                    if(1 == opcao){
+
+                    } else if( 2 == opcao){
+                        
+                    } else {
+
+                    }
+                    break;
             }
         }while(n != 0);
         
+        entrada.close();
     }
 }
