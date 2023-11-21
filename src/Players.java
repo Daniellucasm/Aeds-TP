@@ -117,8 +117,6 @@ public class Players {
         this.weight = weight;
     }
 
-    /** Faltam o SET (aniversario) */
-
     public byte[] toByteArray() throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(baos);

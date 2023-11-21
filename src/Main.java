@@ -295,7 +295,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         // Guardando em uma variavel o local da base de dados
         Scanner entrada = new Scanner(System.in);
-        String arquivo = "C:\\Users\\Pichau\\Desktop\\TP1\\src\\base.csv";
+        String arquivo = "C:\\Users\\Pichau\\Desktop\\Faculdade\\708726_Daniel_Lucas2_Murta.z\\3º periodo\\AEDS III\\TP1\\src\\base.csv";
         List<Players> jogadores = new ArrayList<Players>(); // inicializando Lista de Jogadores
         int n = 1;
 
@@ -308,6 +308,7 @@ public class Main {
             System.out.println("--------------------- (3) Atualizar um registro --------------------");
             System.out.println("--------------------- (4) Deletar um registro ----------------------");
             System.out.println("--------------------- (5) ORDENAÇÃO EXTERNA ------------------------");
+            System.out.println("--------------------- (6) Compressão de dados ----------------------");
             System.out.println("----------------------------- (0) SAIR -----------------------------");
             System.out.println("====================================================================");
             n = entrada.nextInt();
@@ -345,14 +346,17 @@ public class Main {
                     }
                     break;
                 case 6:
-                    System.out.println("(1) Árvore B");
-                    System.out.println("(2) Hashing Estendido");
-                    System.out.println("(3) Lista invertida");
+                    System.out.println("(1) Huffman");
+                    System.out.println("(2) LZW");
                     n = entrada.nextInt();
                     if (1 == n) {
-                        distribuicao(jogadores);
+                        Huffman huff = new Huffman();
+                        huff.compress(jogadores.toString());
+                        //huff.decompress();
                     } else if (2 == n) {
-
+                        LZW lzw = new LZW();
+                        lzw.compress(jogadores.toString());
+                        lzw.decompress();
                     } else {
 
                     }
