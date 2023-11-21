@@ -309,9 +309,11 @@ public class Main {
             System.out.println("--------------------- (4) Deletar um registro ----------------------");
             System.out.println("--------------------- (5) ORDENAÇÃO EXTERNA ------------------------");
             System.out.println("--------------------- (6) Compressão de dados ----------------------");
+            System.out.println("--------------------- (7) Casamento de Padrões ----------------------");
             System.out.println("----------------------------- (0) SAIR -----------------------------");
             System.out.println("====================================================================");
             n = entrada.nextInt();
+            entrada.nextLine();
 
             switch (n) {
                 case 1:
@@ -361,6 +363,18 @@ public class Main {
 
                     }
                     break;
+                case 7:
+                    System.out.println("(1) KMP");
+                    System.out.println("(2)");
+                    n = entrada.nextInt();
+                    entrada.nextLine();
+                    if(1 == n){
+                        KMP kmp = new KMP();
+                        kmp.jogadores = jogadores;
+                        kmp.iniciaKMP();
+                    } else if (2 == n){
+
+                    }
             }
         }
         entrada.close();
