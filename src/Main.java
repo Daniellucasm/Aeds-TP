@@ -295,7 +295,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         // Guardando em uma variavel o local da base de dados
         Scanner entrada = new Scanner(System.in);
-        String arquivo = "C:\\Users\\Pichau\\Desktop\\Faculdade\\708726_Daniel_Lucas2_Murta.z\\3º periodo\\AEDS III\\TP1\\src\\base.csv";
+        String arquivo = "./src/base.csv";
         List<Players> jogadores = new ArrayList<Players>(); // inicializando Lista de Jogadores
         int n = 1;
 
@@ -365,7 +365,7 @@ public class Main {
                     break;
                 case 7:
                     System.out.println("(1) KMP");
-                    System.out.println("(2)");
+                    System.out.println("(2) Rabin-Karp");
                     n = entrada.nextInt();
                     entrada.nextLine();
                     if(1 == n){
@@ -373,7 +373,7 @@ public class Main {
                         kmp.jogadores = jogadores;
                         kmp.iniciaKMP();
                     } else if (2 == n){
-
+                        RabinKarp.executar(jogadores);
                     }
             }
         }
