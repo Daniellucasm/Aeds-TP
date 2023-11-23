@@ -1,114 +1,192 @@
 import java.util.*;
 import java.io.*;
 
+class CaractereForaDoIntervaloException extends Exception {
+    public CaractereForaDoIntervaloException(String message) {
+        super(message);
+    }
+}
+
 public class Huffman {
+    public void executar(List<Players> jogadores) {
+        // Texto exemplo para Compactar e Decodifição usando o Algoritmo de Huffman
+        String test = jogadores.toString();
 
-    public void compress(String text) {
-        Map<Character, Integer> frequencyMap = buildFrequencyMap(text);
-        HuffmanNode root = buildHuffmanTree(frequencyMap);
-        Map<Character, String> huffmanCodes = generateHuffmanCodes(root);
-
-        String encodedText = encode(text, huffmanCodes);
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("compressed_huffman.txt"))) {
-            writer.write(encodedText);
-            System.out.println("Texto comprimido foi escrito no arquivo com sucesso!");
-        } catch (IOException e) {
-            System.out.println("Ocorreu um erro ao escrever no arquivo: " + e.getMessage());
-        }
-    }
-
-    public void decompress() {
-        StringBuilder encodedText = new StringBuilder();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader("compressed_huffman.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                encodedText.append(line);
-            }
-        } catch (IOException e) {
-            System.out.println("Ocorreu um erro ao ler o arquivo: " + e.getMessage());
-            return;
-        }
-
-        Map<Character, Integer> frequencyMap = buildFrequencyMap(encodedText.toString());
-        HuffmanNode root = buildHuffmanTree(frequencyMap);
-        String decodedText = decode(encodedText.toString(), root);
-
-        System.out.println("Texto descomprimido: " + decodedText);
-    }
-
-    private Map<Character, Integer> buildFrequencyMap(String text) {
-        Map<Character, Integer> frequencyMap = new HashMap<>();
-        for (char c : text.toCharArray()) {
-            frequencyMap.put(c, frequencyMap.getOrDefault(c, 0) + 1);
-        }
-        return frequencyMap;
-    }
-
-    private HuffmanNode buildHuffmanTree(Map<Character, Integer> frequencyMap) {
-        PriorityQueue<HuffmanNode> priorityQueue = new PriorityQueue<>();
-        for (Map.Entry<Character, Integer> entry : frequencyMap.entrySet()) {
-            priorityQueue.offer(new HuffmanNode(entry.getKey(), entry.getValue()));
-        }
-
-        while (priorityQueue.size() > 1) {
-            HuffmanNode left = priorityQueue.poll();
-            HuffmanNode right = priorityQueue.poll();
-
-            HuffmanNode newNode = new HuffmanNode('\0', left.frequency + right.frequency);
-            newNode.left = left;
-            newNode.right = right;
-            priorityQueue.offer(newNode);
-        }
-
-        return priorityQueue.poll();
-    }
-
-    private void generateHuffmanCodesHelper(HuffmanNode root, String code, Map<Character, String> huffmanCodes) {
-        if (root == null) {
-            return;
-        }
-
-        if (root.left == null && root.right == null) {
-            huffmanCodes.put(root.data, code);
-        }
-
-        generateHuffmanCodesHelper(root.left, code + "0", huffmanCodes);
-        generateHuffmanCodesHelper(root.right, code + "1", huffmanCodes);
-    }
-
-    private Map<Character, String> generateHuffmanCodes(HuffmanNode root) {
-        Map<Character, String> huffmanCodes = new HashMap<>();
-        generateHuffmanCodesHelper(root, "", huffmanCodes);
-        return huffmanCodes;
-    }
-
-    private String encode(String text, Map<Character, String> huffmanCodes) {
-        StringBuilder encodedText = new StringBuilder();
-        for (char c : text.toCharArray()) {
-            encodedText.append(huffmanCodes.get(c));
-        }
-        return encodedText.toString();
-    }
-
-    private String decode(String encodedText, HuffmanNode root) {
-        StringBuilder decodedText = new StringBuilder();
-        HuffmanNode current = root;
-
-        for (int i = 0; i < encodedText.length(); i++) {
-            if (encodedText.charAt(i) == '0') {
-                current = current.left;
+        // Passo 1 - Percorre o texto contando os simbolos e montando um vetor de
+        // frequencias.
+        int[] charFreqs = new int[256];
+        for (char c : test.toCharArray()) {
+            if (c < 256) {
+                charFreqs[c]++;
             } else {
-                current = current.right;
-            }
-
-            if (current.left == null && current.right == null) {
-                decodedText.append(current.data);
-                current = root;
+                System.out.println(c);
             }
         }
 
-        return decodedText.toString();
+        // Criar a arvore dos codigos para a Compactação
+        HuffmanTree tree = buildTree(charFreqs);
+
+        // Resultados das quantidade e o codigo da Compactação
+        System.out.println("TABELA DE CÓDIGOS");
+        System.out.println("SÍMBOLO\tQUANTIDADE\tHUFFMAN CÓDIGO");
+        printCodes(tree, new StringBuffer());
+
+        // Compactar o texto
+        String encode = encode(tree, test);
+        // Mostrar o texto Compactado
+        System.out.println("\nTEXTO COMPACTADO");
+        System.out.println(encode);
+
+        // Decodificar o texto
+        System.out.println("\n\nTEXTO DECODIFICADO");
+        System.out.println(decode(tree, encode));
+
     }
+
+    /*
+     * Criar a árvore de Codificação - A partir da quantidade de frequencias de cada
+     * letra
+     * cria-se uma arvore binaria para a compactação do texto
+     * Parametro de Entrada: charFreqs: array com quantidade de frequ�ncias de cada
+     * letra
+     * Parametro de Saída: trees: arvore binaria para a compactação e decodificação
+     */
+    public HuffmanTree buildTree(int[] charFreqs) {
+        // Cria uma Fila de Prioridade
+        // A Fila ser� criado pela ordem de frequ�ncia da letra no texto
+        PriorityQueue<HuffmanTree> trees = new PriorityQueue<HuffmanTree>();
+        // Criar as Folhas da �rvore para cada letra
+        for (int i = 0; i < charFreqs.length; i++) {
+            if (charFreqs[i] > 0)
+                trees.offer(new HuffmanLeaf(charFreqs[i], (char) i)); // Inser os elementos, nó folha, na fila de
+                                                                      // prioridade
+        }
+        // Percorre todos os elementos da fila
+        // Criando a arvore binaria de baixo para cima
+        while (trees.size() > 1) {
+            HuffmanTree a = trees.poll(); // poll - Retorna o proximo na da Fila ou NULL se não tem mais
+            HuffmanTree b = trees.poll(); // poll - Retorna o proximo na da Fila ou NULL se não tem mais
+
+            // Criar os nós da arvore binaria
+            trees.offer(new HuffmanNode(a, b));
+        }
+        // Retorna o primeiro n� da �rvore
+        return trees.poll();
+    }
+
+    /*
+     * COMPACTAR a string
+     * Par�metros de Entrada: tree - Raiz da �rvore de compacta��o
+     * encode - Texto original
+     * Par�metros de Sa�da: encodeText- Texto Compactado
+     */
+    public String encode(HuffmanTree tree, String encode) {
+        assert tree != null;
+
+        String encodeText = "";
+        for (char c : encode.toCharArray()) {
+            encodeText += (getCodes(tree, new StringBuffer(), c));
+        }
+        return encodeText; // Retorna o texto Compactado
+    }
+
+    /*
+     * DECODIFICAR a string
+     * Par�metros de Entrada: tree - Raiz da �rvore de compacta��o
+     * encode - Texto Compactado
+     * Par�metros de Sa�da: decodeText- Texto decodificado
+     */
+    public String decode(HuffmanTree tree, String encode) {
+        assert tree != null;
+
+        String decodeText = "";
+        HuffmanNode node = (HuffmanNode) tree;
+        for (char code : encode.toCharArray()) {
+            if (code == '0') { // Quando for igual a 0 � o Lado Esquerdo
+                if (node.left instanceof HuffmanLeaf) {
+                    decodeText += ((HuffmanLeaf) node.left).value; // Retorna o valor do n� folha, pelo lado Esquerdo
+                    node = (HuffmanNode) tree; // Retorna para a Ra�z da �rvore
+                } else {
+                    node = (HuffmanNode) node.left; // Continua percorrendo a �rvore pelo lado Esquerdo
+                }
+            } else if (code == '1') { // Quando for igual a 1 � o Lado Direito
+                if (node.right instanceof HuffmanLeaf) {
+                    decodeText += ((HuffmanLeaf) node.right).value; // Retorna o valor do n� folha, pelo lado Direito
+                    node = (HuffmanNode) tree; // Retorna para a Ra�z da �rvore
+                } else {
+                    node = (HuffmanNode) node.right; // Continua percorrendo a �rvore pelo lado Direito
+                }
+            }
+        } // End for
+        return decodeText; // Retorna o texto Decodificado
+    }
+
+    /*
+     * M�todo para percorrer a �rvore e mostra a tabela de compacta��o
+     * Par�metros de Entrada: tree - Raiz da �rvore de compacta��o
+     * prefix - texto codificado com 0 e/ou 1
+     */
+    public void printCodes(HuffmanTree tree, StringBuffer prefix) {
+        assert tree != null;
+
+        if (tree instanceof HuffmanLeaf) {
+            HuffmanLeaf leaf = (HuffmanLeaf) tree;
+
+            // Imprime na tela a Lista
+            System.out.println(leaf.value + "\t" + leaf.frequency + "\t\t" + prefix);
+
+        } else if (tree instanceof HuffmanNode) {
+            HuffmanNode node = (HuffmanNode) tree;
+
+            // traverse left
+            prefix.append('0');
+            printCodes(node.left, prefix);
+            prefix.deleteCharAt(prefix.length() - 1);
+
+            // traverse right
+            prefix.append('1');
+            printCodes(node.right, prefix);
+            prefix.deleteCharAt(prefix.length() - 1);
+        }
+    }
+
+    /*
+     * M�todo para retornar o c�digo compactado de uma letra (w)
+     * Par�metros de Entrada: tree - Raiz da �rvore de compacta��o
+     * prefix - texto codificado com 0 e/ou 1
+     * w - Letra
+     * Par�metros de Sa�da: prefix- Letra codificada
+     */
+    public String getCodes(HuffmanTree tree, StringBuffer prefix, char w) {
+        assert tree != null;
+
+        if (tree instanceof HuffmanLeaf) {
+            HuffmanLeaf leaf = (HuffmanLeaf) tree;
+
+            // Retorna o texto compactado da letra
+            if (leaf.value == w) {
+                return prefix.toString();
+            }
+
+        } else if (tree instanceof HuffmanNode) {
+            HuffmanNode node = (HuffmanNode) tree;
+
+            // Percorre a esquerda
+            prefix.append('0');
+            String left = getCodes(node.left, prefix, w);
+            prefix.deleteCharAt(prefix.length() - 1);
+
+            // Percorre a direita
+            prefix.append('1');
+            String right = getCodes(node.right, prefix, w);
+            prefix.deleteCharAt(prefix.length() - 1);
+
+            if (left == null)
+                return right;
+            else
+                return left;
+        }
+        return null;
+    }
+
 }

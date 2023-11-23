@@ -353,8 +353,7 @@ public class Main {
                     n = entrada.nextInt();
                     if (1 == n) {
                         Huffman huff = new Huffman();
-                        huff.compress(jogadores.toString());
-                        //huff.decompress();
+                        huff.executar(jogadores);
                     } else if (2 == n) {
                         LZW lzw = new LZW();
                         lzw.compress(jogadores.toString());
