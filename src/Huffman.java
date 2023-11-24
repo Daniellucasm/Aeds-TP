@@ -1,5 +1,4 @@
 import java.util.*;
-import java.io.*;
 
 class CaractereForaDoIntervaloException extends Exception {
     public CaractereForaDoIntervaloException(String message) {

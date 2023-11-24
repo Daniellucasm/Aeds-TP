@@ -16,9 +16,8 @@ public abstract class RabinKarp {
     public static void executar(List<Players> jogadores) {
         final String base = jogadores.toString();
 
-        Scanner entrada = new Scanner(System.in);
-        System.out.print("Entre com o padrão que deseja buscar: ");
-        String padrao = entrada.nextLine();
+        System.out.print("\nEntre com o padrão que deseja buscar: ");
+        String padrao = Main.entrada.nextLine();
 
         buscar(padrao, base, asc);
     }

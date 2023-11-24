@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Main {
+    public static Scanner entrada = new Scanner(System.in);
+
     public static void leitorBase(String arquivo, List<Players> jogadores) throws Exception {
         // Inicializando um ID sequencial e o Leitor de arquivo
         int id = 0;
@@ -68,7 +70,6 @@ public class Main {
     public static void leituraID(List<Players> jogadores) throws Exception {
         Players j_temp = new Players();
         DataInputStream dis = new DataInputStream(new FileInputStream("jogadores.txt"));
-        Scanner entrada = new Scanner(System.in);
         System.out.println("Qual o ID do registro?");
         int idBusca = entrada.nextInt();
         int len = dis.readInt();
@@ -88,7 +89,6 @@ public class Main {
 
     /** LEMBRAR **/
     public static void atualizarRegistro(List<Players> jogadores) throws Exception {
-        Scanner entrada = new Scanner(System.in);
         System.out.println("Qual o ID do registro que deseja atualizar?");
         int idBusca = entrada.nextInt();
         entrada.nextLine();
@@ -115,7 +115,6 @@ public class Main {
 
     /** LEMBRAR **/
     public static void deletarRegistro(List<Players> jogadores) throws Exception {
-        Scanner entrada = new Scanner(System.in);
         System.out.println("Qual o ID do registro que deseja deletar?");
         int idBusca = entrada.nextInt();
         for (int i = 0; i < jogadores.size(); i++) {
@@ -294,7 +293,6 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         // Guardando em uma variavel o local da base de dados
-        Scanner entrada = new Scanner(System.in);
         String arquivo = "./src/base.csv";
         List<Players> jogadores = new ArrayList<Players>(); // inicializando Lista de Jogadores
         int n = 1;
@@ -336,16 +334,15 @@ public class Main {
                     break;
                 case 5:
                     System.out.println("(1) Intercalação Balanceada comum");
-                    System.out.println("(2) Intercalação Balanceada com blocos de tamanho variável");
-                    System.out.println("(3) Intercalação Balanceada com seleção por substituição");
+                    // TODO: a ser implementado
+                    // System.out.println("(2) Intercalação Balanceada com blocos de tamanho variável");
+                    // System.out.println("(3) Intercalação Balanceada com seleção por substituição");
                     n = entrada.nextInt();
                     if (1 == n) {
                         distribuicao(jogadores);
-                    } else if (2 == n) {
-
-                    } else {
-
-                    }
+                    } 
+                    // else if (2 == n) {
+                    // } else {}
                     break;
                 case 6:
                     System.out.println("(1) Huffman");
@@ -368,14 +365,13 @@ public class Main {
                     n = entrada.nextInt();
                     entrada.nextLine();
                     if(1 == n){
-                        KMP kmp = new KMP();
-                        kmp.jogadores = jogadores;
-                        kmp.iniciaKMP();
+                        KMP.executar(jogadores);
                     } else if (2 == n){
                         RabinKarp.executar(jogadores);
                     }
             }
         }
+
         entrada.close();
     }
 }

@@ -1,42 +1,56 @@
 import java.util.*;
 
-public class KMP {
-    List<Players> jogadores;
+public abstract class KMP {
 
     /**
-     * Método para iniciar o KMP
+     * Método para preparar a base de dados, coletar o padrão e iniciar
+     * a busca
+     * 
+     * @param jogadores: lista de objetos jodadores que representam a base de dados
      */
-    public void iniciaKMP(){
-        //armazenando toda a base em uma String
-        String text = jogadores.toString();
+    public static void executar(List<Players> jogadores) {
+        final String base = jogadores.toString();
 
-        Scanner entrada = new Scanner(System.in);
-        System.out.println("Entre com o padrão que deseja buscar:");
-        String busca = entrada.nextLine();
-        
-        KMPSearch(text, busca);
+        System.out.print("\nEntre com o padrão que deseja buscar: ");
+        String padrao = Main.entrada.nextLine();
+
+        buscar(padrao, base);
     }
 
-    public static void KMPSearch(String text, String pattern) {
-        //inicializando variaveis com o tamanho da base e padrão buscado
-        int M = pattern.length();
-        int N = text.length();
+    /**
+     * Método para realizar o casamento de padrões utilizando KMP
+     * 
+     * @param padrao: padrão a ser identificado na busca
+     * @param base:   todo o texto contido na base de dados da aplicação
+     */
+    private static void buscar(String padrao, String base) {
+        int tamPadrao = padrao.length();
+        int tamBase = base.length();
+        int[] lps = gerarVetorLPS(padrao);
+        int i = 0; // index da iteração sobre a base
+        int j = 0; // index da iteração sobre o padrão
+        int comparacoes = 0;
+        int padroesEncontrados = 0;
 
-        int[] lps = computeLPSArray(pattern);
-        int i = 0;
-        int j = 0;
-        int comparacoes = 0;//Variável de contagem de comparações
-
-        while (i < N) {
+        while (i < tamBase) {
             comparacoes++;
-            if (pattern.charAt(j) == text.charAt(i)) {
+
+            if (padrao.charAt(j) == base.charAt(i)) {
                 i++;
                 j++;
             }
-            if (j == M) {
-                System.out.println("Padrão encontrado na posição " + (i - j) + ". Número de comparações: " + comparacoes);
+
+            /**
+             * Se j for igual ao tamanho do padrão, logo todos os caracteres do intervalo da
+             * base analisados correspondem aos do padrão. Caso contrário, passamos para a
+             * próxima posição válida no vetor LPS
+             */
+            if (j == tamPadrao) {
+                padroesEncontrados++;
+                System.out
+                        .println("Padrão encontrado na posição " + (i - j) + ". Número de comparações: " + comparacoes);
                 j = lps[j - 1];
-            } else if (i < N && pattern.charAt(j) != text.charAt(i)) {
+            } else if (i < tamBase && padrao.charAt(j) != base.charAt(i)) {
                 if (j != 0) {
                     j = lps[j - 1];
                 } else {
@@ -44,26 +58,40 @@ public class KMP {
                 }
             }
         }
+
+        if (padroesEncontrados == 0) {
+            System.out.println("\nNenhum padrão foi encontrado. Total de comparações: " + comparacoes + "\n");
+        } else {
+            System.out.println(
+                    "\nUm total de " + padroesEncontrados + " padrões foram encontrados. Total de comparações: "
+                            + comparacoes + "\n");
+        }
     }
 
-    /*
+    /**
      * Método responsável por calcular a matriz de prefixo-sufixo
+     * 
+     * @param padrao: padrão a ser identificado na busca
+     * @return um vertor de inteiros contendo a matriz transposta linearmente
      */
-    public static int[] computeLPSArray(String pattern) {
-        int len = pattern.length();
-        int[] lps = new int[len];
+    private static int[] gerarVetorLPS(String padrao) {
+        int tamPadrao = padrao.length();
+        int[] lps = new int[tamPadrao];
         int j = 0;
         int i = 1;
         lps[0] = 0;
 
-        while (i < len) {
-            //caso os caracteres forem iguais incrementamos j e atribuimos esse valor a j.
-            if (pattern.charAt(i) == pattern.charAt(j)) {
+        while (i < tamPadrao) {
+            // Caso os caracteres sejam iguais, incrementamos j e atribuimos esse valor a j
+            if (padrao.charAt(i) == padrao.charAt(j)) {
                 j++;
                 lps[i] = j;
                 i++;
             } else {
-                //caso não encontrado o algoritmo ajusta j baseado nos valores já computados na matriz.
+                /**
+                 * Caso não haja correspondência, o algoritmo ajusta j baseado nos valores já
+                 * processados na matriz
+                 */
                 if (j != 0) {
                     j = lps[j - 1];
                 } else {
@@ -72,6 +100,7 @@ public class KMP {
                 }
             }
         }
+
         return lps;
     }
 }
