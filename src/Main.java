@@ -232,8 +232,8 @@ public class Main {
                 j1.add(jTemp);
                 len = dis1.readInt();
             }
-        } catch (EOFException e){
-                acabou = true;
+        } catch (EOFException e) {
+            acabou = true;
         }
         acabou = false;
         try {
@@ -245,8 +245,8 @@ public class Main {
                 j2.add(jTemp);
                 len = dis2.readInt();
             }
-        } catch (EOFException e){
-                acabou = true;
+        } catch (EOFException e) {
+            acabou = true;
         }
 
         dis1.close();
@@ -257,17 +257,20 @@ public class Main {
         DataOutputStream dos1 = new DataOutputStream(new FileOutputStream("arq3.txt"));
         DataOutputStream dos2 = new DataOutputStream(new FileOutputStream("arq4.txt"));
         while (x1 < j1.size() || x2 < j2.size()) {
-            if (j1.get(x1).getSelecao().compareTo(j2.get(x2).getSelecao()) <= 0 && arq % 2 != 0 && j1.get(x1) != null && j2.get(x2) != null) {
+            if (j1.get(x1).getSelecao().compareTo(j2.get(x2).getSelecao()) <= 0 && arq % 2 != 0 && j1.get(x1) != null
+                    && j2.get(x2) != null) {
                 ba = j1.get(x1).toByteArray();
                 dos1.writeInt(ba.length);
                 dos1.write(ba);
                 x1++;
-            } else if (j1.get(x1).getSelecao().compareTo(j2.get(x2).getSelecao()) > 0 && arq % 2 != 0 && j1.get(x1) != null && j2.get(x2) != null) {
+            } else if (j1.get(x1).getSelecao().compareTo(j2.get(x2).getSelecao()) > 0 && arq % 2 != 0
+                    && j1.get(x1) != null && j2.get(x2) != null) {
                 ba = j2.get(x2).toByteArray();
                 dos1.writeInt(ba.length);
                 dos1.write(ba);
                 x2++;
-            } else if (j1.get(x1).getSelecao().compareTo(j2.get(x2).getSelecao()) <= 0 && arq % 2 == 0 && j1.get(x1) != null && j2.get(x2) != null) {
+            } else if (j1.get(x1).getSelecao().compareTo(j2.get(x2).getSelecao()) <= 0 && arq % 2 == 0
+                    && j1.get(x1) != null && j2.get(x2) != null) {
                 ba = j1.get(x1).toByteArray();
                 dos2.writeInt(ba.length);
                 dos2.write(ba);
@@ -350,11 +353,22 @@ public class Main {
                     n = entrada.nextInt();
                     if (1 == n) {
                         Huffman huff = new Huffman();
-                        huff.executar(jogadores);
+                        huff.executarCompact(jogadores);
                     } else if (2 == n) {
                         LZW lzw = new LZW();
-                        lzw.compress(jogadores.toString());
-                        lzw.decompress();
+                        System.out.println("(1) Compactar");
+                        System.out.println("(2) Descompactar");
+                        n = entrada.nextInt();
+                        switch (n) {
+                            case 1:
+                                lzw.compress(jogadores.toString());    
+                                break;
+                            case 2:
+                                lzw.decompress();
+                                break;
+                            default:
+                                break;
+                        }
                     } else {
 
                     }

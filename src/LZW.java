@@ -32,7 +32,7 @@ public class LZW {
             result.add(dictionary.get(current));
         }
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("compressao.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("arquivoLZWCompressao.txt"))) {
             for (int i = 0; i < result.size(); i++) {
                 writer.write(result.get(i) + ", ");
             }
@@ -45,7 +45,7 @@ public class LZW {
     public void decompress() {
         List<Integer> compressed = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("compressao.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("arquivoLZWCompressao.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] values = line.split(", "); // Supondo que os inteiros estejam separados por ", "
