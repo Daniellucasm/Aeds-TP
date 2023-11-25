@@ -353,7 +353,7 @@ public class Main {
                     n = entrada.nextInt();
                     if (1 == n) {
                         Huffman huff = new Huffman();
-                        huff.executarCompact(jogadores);
+                        huff.executar(jogadores);
                     } else if (2 == n) {
                         LZW lzw = new LZW();
                         System.out.println("(1) Compactar");

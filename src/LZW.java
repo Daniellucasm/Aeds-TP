@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.util.*;
 
 public class LZW {
-
+    /*
+     * Método para executar a compressão
+     * Parametro de Entrada: uncompressed: Todo o texto da base
+     */
     public void compress(String uncompressed) {
         Map<String, Integer> dictionary = new HashMap<>();
         int dictSize = 256;
@@ -42,6 +45,9 @@ public class LZW {
         }
     }
 
+    /*
+     * Método para executar a decodificação e imprimir o texto
+     */
     public void decompress() {
         List<Integer> compressed = new ArrayList<>();
 

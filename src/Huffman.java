@@ -13,7 +13,12 @@ class CaractereForaDoIntervaloException extends Exception {
 
 public class Huffman {
     HuffmanTree tree; 
-    public void executarCompact(List<Players> jogadores) {
+
+    /*
+     * Método para executar todas as funções para compactar e decodificar o texto
+     * Parametro de Entrada: jogadores: Lista de Players
+     */
+    public void executar(List<Players> jogadores) {
         // Texto exemplo para Compactar usando o Algoritmo de Huffman
         String test = jogadores.toString();
 
