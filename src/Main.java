@@ -311,6 +311,7 @@ public class Main {
             System.out.println("--------------------- (5) ORDENAÇÃO EXTERNA ------------------------");
             System.out.println("--------------------- (6) Compressão de dados ----------------------");
             System.out.println("--------------------- (7) Casamento de Padrões ----------------------");
+            System.out.println("--------------------- (8) Criptografia ----------------------");
             System.out.println("----------------------------- (0) SAIR -----------------------------");
             System.out.println("====================================================================");
             n = entrada.nextInt();
@@ -382,6 +383,19 @@ public class Main {
                         KMP.executar(jogadores);
                     } else if (2 == n){
                         RabinKarp.executar(jogadores);
+                    }
+                case 8:
+                    System.out.println("(1) Cesar");
+                    n = entrada.nextInt();
+                    if(1 == n){
+                        System.out.println("(1) Criptografar");
+                        System.out.println("(2) Descriptografar");
+                        n = entrada.nextInt();
+                        if( 1 == n ){
+                            Cesar.criptografar(jogadores.toString(), 3);
+                        } else {
+                            System.out.println(Cesar.descriptografar(jogadores.toString(), 3));
+                        }
                     }
             }
         }
