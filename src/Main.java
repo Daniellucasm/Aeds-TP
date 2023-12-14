@@ -386,6 +386,7 @@ public class Main {
                     }
                 case 8:
                     System.out.println("(1) Cesar");
+                    System.out.println("(2) RSA");
                     n = entrada.nextInt();
                     if(1 == n){
                         System.out.println("(1) Criptografar");
@@ -395,6 +396,15 @@ public class Main {
                             Cesar.criptografar(jogadores.toString(), 3);
                         } else {
                             System.out.println(Cesar.descriptografar(jogadores.toString(), 3));
+                        }
+                    } else if( 2 == n ) {
+                        System.out.println("(1) Criptografar");
+                        System.out.println("(2) Descriptografar");
+                        n = entrada.nextInt();
+                        if( 1 == n ){
+                            RSA.startRSA(jogadores.toString());
+                        } else {
+                            //System.out.println(Cesar.descriptografar(jogadores.toString(), 3));
                         }
                     }
             }
