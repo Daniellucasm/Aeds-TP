@@ -310,8 +310,8 @@ public class Main {
             System.out.println("--------------------- (4) Deletar um registro ----------------------");
             System.out.println("--------------------- (5) ORDENAÇÃO EXTERNA ------------------------");
             System.out.println("--------------------- (6) Compressão de dados ----------------------");
-            System.out.println("--------------------- (7) Casamento de Padrões ----------------------");
-            System.out.println("--------------------- (8) Criptografia ----------------------");
+            System.out.println("--------------------- (7) Casamento de Padrões ---------------------");
+            System.out.println("--------------------- (8) Criptografia -----------------------------");
             System.out.println("----------------------------- (0) SAIR -----------------------------");
             System.out.println("====================================================================");
             n = entrada.nextInt();
@@ -339,12 +339,14 @@ public class Main {
                 case 5:
                     System.out.println("(1) Intercalação Balanceada comum");
                     // TODO: a ser implementado
-                    // System.out.println("(2) Intercalação Balanceada com blocos de tamanho variável");
-                    // System.out.println("(3) Intercalação Balanceada com seleção por substituição");
+                    // System.out.println("(2) Intercalação Balanceada com blocos de tamanho
+                    // variável");
+                    // System.out.println("(3) Intercalação Balanceada com seleção por
+                    // substituição");
                     n = entrada.nextInt();
                     if (1 == n) {
                         distribuicao(jogadores);
-                    } 
+                    }
                     // else if (2 == n) {
                     // } else {}
                     break;
@@ -362,7 +364,7 @@ public class Main {
                         n = entrada.nextInt();
                         switch (n) {
                             case 1:
-                                lzw.compress(jogadores.toString());    
+                                lzw.compress(jogadores.toString());
                                 break;
                             case 2:
                                 lzw.decompress();
@@ -379,22 +381,30 @@ public class Main {
                     System.out.println("(2) Rabin-Karp");
                     n = entrada.nextInt();
                     entrada.nextLine();
-                    if(1 == n){
+                    if (1 == n) {
                         KMP.executar(jogadores);
-                    } else if (2 == n){
+                    } else if (2 == n) {
                         RabinKarp.executar(jogadores);
                     }
                 case 8:
                     System.out.println("(1) Cesar");
+                    System.out.println("(3) One Time Pad");
                     n = entrada.nextInt();
-                    if(1 == n){
-                        System.out.println("(1) Criptografar");
-                        System.out.println("(2) Descriptografar");
+                    System.out.println("(1) Criptografar");
+                    System.out.println("(2) Descriptografar");
+                    if (1 == n) {
                         n = entrada.nextInt();
-                        if( 1 == n ){
+                        if (1 == n) {
                             Cesar.criptografar(jogadores.toString(), 3);
                         } else {
                             System.out.println(Cesar.descriptografar(jogadores.toString(), 3));
+                        }
+                    } else if (3 == n) {
+                        n = entrada.nextInt();
+                        if (1 == n) {
+                            OneTimePad.cifrar(jogadores);
+                        } else {
+                            OneTimePad.decifrar();
                         }
                     }
             }
