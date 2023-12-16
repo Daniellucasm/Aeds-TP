@@ -391,9 +391,9 @@ public class Main {
                     System.out.println("(2) RSA");
                     System.out.println("(3) One Time Pad");
                     n = entrada.nextInt();
-                    System.out.println("(1) Criptografar");
-                    System.out.println("(2) Descriptografar");
                     if (1 == n) {
+                        System.out.println("(1) Criptografar");
+                        System.out.println("(2) Descriptografar");
                         n = entrada.nextInt();
                         if (1 == n) {
                             Cesar.criptografar(jogadores.toString(), 3);
@@ -401,15 +401,17 @@ public class Main {
                             System.out.println(Cesar.descriptografar(jogadores.toString(), 3));
                         }
                     } else if (2 == n) {
-                        System.out.println("(1) Criptografar");
-                        System.out.println("(2) Descriptografar");
+                        System.out.println("(1) Base de dados");
+                        System.out.println("(2) Modelo teste");
                         n = entrada.nextInt();
                         if (1 == n) {
-                            RSA.startRSA(jogadores.toString());
+                            RSA.startRSA(jogadores.toString(), 130000);
                         } else {
-                            // System.out.println(Cesar.descriptografar(jogadores.toString(), 3));
+                            RSA.startRSA("TESTE", 512);
                         }
                     } else if (3 == n) {
+                        System.out.println("(1) Criptografar");
+                        System.out.println("(2) Descriptografar");
                         n = entrada.nextInt();
                         if (1 == n) {
                             OneTimePad.cifrar(jogadores);

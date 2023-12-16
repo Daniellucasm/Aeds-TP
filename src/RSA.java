@@ -5,10 +5,10 @@ import java.math.BigInteger;
 import java.util.Random;
 
 public class RSA {
-    public static void startRSA(String mensagem){
+    public static void startRSA(String mensagem, int bits){
         // Encontrar números primos grandes p e q
-		BigInteger p = largePrime(512);
-		BigInteger q = largePrime(512);
+		BigInteger p = largePrime(bits);
+		BigInteger q = largePrime(bits);
 
         // Calculo de n a partir de p e q
 		BigInteger n = n(p, q);
@@ -49,7 +49,7 @@ public class RSA {
     }
 
 	public static void salvaChaves(BigInteger p, BigInteger q, BigInteger n, BigInteger phi, BigInteger e, BigInteger d){
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter("arquivoRSACifra.txt"))) {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter("arquivoRSAChave.txt"))) {
             writer.write(p.toString() + "\n");
 			writer.write(q.toString() + "\n");
 			writer.write(n.toString() + "\n");
